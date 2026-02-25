@@ -12,7 +12,7 @@
     <div class="container">
         <a class="navbar-brand" href="/">DDS Meubel</a>
         <div>
-            <a href="/products" class="btn btn-outline-light me-2">Produk</a>
+            <a href="/products" class="btn btn-outline-light me-2">product</a>
             <a href="/cart" class="btn btn-warning">Keranjang</a>
         </div>
     </div>
