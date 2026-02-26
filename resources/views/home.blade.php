@@ -269,4 +269,86 @@
     </div>
   </div>
 </section>
+
+{{-- ================= ADMIN SECTION ================= --}}
+<style>
+    .admin-section {
+        background: linear-gradient(135deg, #0f1b2e, #1c2b45);
+        padding: 80px 0;
+        margin-top: 80px;
+    }
+
+    .admin-card {
+        background: linear-gradient(135deg, #2c2f36, #3a2f2f);
+        border-radius: 25px;
+        padding: 50px;
+        color: white;
+        box-shadow: 0 0 40px rgba(255,140,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .admin-icon {
+        background: #ff9800;
+        width: 90px;
+        height: 90px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        box-shadow: 0 0 30px rgba(255,152,0,0.5);
+        margin-right: 25px;
+    }
+
+    .admin-btn {
+        background: linear-gradient(135deg, #ff9800, #ff6f00);
+        color: white;
+        padding: 18px 35px;
+        border-radius: 15px;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 0 25px rgba(255,140,0,0.6);
+        transition: 0.3s ease;
+    }
+
+    .admin-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 35px rgba(255,140,0,0.9);
+        color: white;
+    }
+</style>
+
+<section class="admin-section">
+    <div class="container">
+        <div class="admin-card">
+
+            <div class="d-flex align-items-center">
+                <div class="admin-icon">
+                    ⬛
+                </div>
+
+                <div>
+                    <h1 class="fw-bold">Admin Panel</h1>
+                    <p class="text-light">
+                        Kelola produk, pesanan, pelanggan & laporan penjualan
+                    </p>
+                    <p style="color:#ffc107;">
+                        Login dengan: admin@ddsmeubel.com
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <a href="{{ route('admin.dashboard') }}" class="admin-btn">
+                    Akses Admin →
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+{{-- ================= END ADMIN SECTION ================= --}}
 @endsection

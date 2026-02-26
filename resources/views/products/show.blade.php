@@ -28,11 +28,13 @@
 
             <p class="mt-3">{{ $product->description }}</p>
 
-            {{-- Tombol Tambah ke Keranjang --}}
-            <a href="{{ route('cart.add', $product->id) }}" 
-               class="btn btn-success mt-3">
-                Tambah ke Keranjang
-            </a>
+            {{-- Tombol Tambah ke Keranjang (FIX POST) --}}
+            <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-3">
+                @csrf
+                <button type="submit" class="btn btn-success">
+                    Tambah ke Keranjang
+                </button>
+            </form>
 
             {{-- Tombol Kembali --}}
             <a href="{{ route('products.index') }}" 

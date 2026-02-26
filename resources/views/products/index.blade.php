@@ -18,7 +18,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </p>
 
-                        <a href="{{ route('products.show', $product->slug) }}" 
+                        <a href="{{ route('products.show', $product->id) }}" 
                            class="btn btn-primary btn-sm">
                             Detail
                         </a>
