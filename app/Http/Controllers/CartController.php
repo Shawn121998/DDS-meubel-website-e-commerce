@@ -2,47 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $cart = session()->get('cart', []);
-        return view('cart.index', compact('cart'));
+        return view('cart.index');
     }
 
-    public function add($id)
+    public function increase($id)
     {
-        $product = Product::findOrFail($id);
         $cart = session()->get('cart', []);
 
         if(isset($cart[$id])) {
-            $cart[$id]['qty']++;
-        } else {
-            $cart[$id] = [
-                "name" => $product->name,
-                "price" => $product->price,
-                "image" => $product->image,
-                "qty" => 1
-            ];
+            $cart[$id]['quantity']++;
+            session()->put('cart', $cart);
         }
 
-        session()->put('cart', $cart);
+        return redirect()->back();
+    }
 
-        return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang!');
+    public function decrease($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if(isset($cart[$id])) {
+            if($cart[$id]['quantity'] > 1){
+                $cart[$id]['quantity']--;
+            }
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->back();
     }
 
     public function remove($id)
     {
-        $cart = session()->get('cart');
+        $cart = session()->get('cart', []);
 
         if(isset($cart[$id])) {
             unset($cart[$id]);
             session()->put('cart', $cart);
         }
 
-        return redirect()->back()->with('success', 'Produk dihapus dari keranjang!');
+        return redirect()->back();
+    }
+
+    public function clear()
+    {
+        session()->forget('cart');
+        return redirect()->back();
     }
 }

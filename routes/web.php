@@ -2,19 +2,20 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;  // <-- HARUS DI ATAS
 
-// Halaman Beranda
 Route::get('/', function () {
     return view('home');
 });
 
-// Route Produk
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::resource('products', ProductController::class);
 
-use App\Http\Controllers\CartController;
+// ================= CART =================
 
-// Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+Route::post('/cart/increase/{id}', [CartController::class, 'increase'])->name('cart.increase');
+Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('cart.decrease');
+
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');

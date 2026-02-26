@@ -7,17 +7,21 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // Halaman Katalog
+    // ===============================
+    // HALAMAN KATALOG
+    // ===============================
     public function index()
     {
         $products = Product::latest()->paginate(8);
         return view('products.index', compact('products'));
     }
 
-    // Halaman Detail
-    public function show($slug)
+    // ===============================
+    // HALAMAN DETAIL (PAKAI ID)
+    // ===============================
+    public function show($id)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::findOrFail($id);
         return view('products.show', compact('product'));
     }
 }
