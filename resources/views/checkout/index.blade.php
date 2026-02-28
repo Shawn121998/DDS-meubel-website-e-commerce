@@ -42,39 +42,31 @@
         background: #1b263b;
     }
 
-    /* RESPONSIVE RADIO */
     .payment-option {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
-        padding: 12px;
-        margin-bottom: 10px;
+        padding: 14px;
+        margin-bottom: 12px;
         cursor: pointer;
-        transition: 0.2s;
+        transition: 0.2s ease;
     }
 
     .payment-option:hover {
         background: #f8f9fa;
-    }
-
-    .payment-option input[type="radio"] {
-        transform: scale(1.2);
+        border-color: #d1d5db;
     }
 </style>
 
 <div class="container mt-4">
 
-    {{-- NAVIGASI --}}
+    {{-- Navigasi --}}
     <div class="mb-3">
-        <a href="{{ route('home') }}" class="text-decoration-none text-secondary">
-            ← Beranda
-        </a>
+        <a href="{{ route('home') }}" class="text-decoration-none text-secondary">← Beranda</a>
         <span class="mx-2">/</span>
-        <a href="{{ route('cart.index') }}" class="text-decoration-none text-secondary">
-            Keranjang
-        </a>
+        <a href="{{ route('cart.index') }}" class="text-decoration-none text-secondary">Keranjang</a>
         <span class="mx-2">/</span>
         <span class="fw-semibold">Checkout</span>
     </div>
@@ -92,7 +84,9 @@
         <div class="col-lg-8">
 
             @if(!empty($cart))
-            <form method="POST" action="#">
+
+            {{-- FORM FIXED --}}
+            <form method="POST" action="{{ route('checkout.process') }}" id="checkoutForm">
                 @csrf
 
                 {{-- Informasi Kontak --}}
@@ -102,18 +96,21 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control" required>
+                            <input type="text" name="name" class="form-control"
+                                   value="{{ old('name') }}" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label>Email</label>
-                            <input type="email" name="email" class="form-control" required>
+                            <input type="email" name="email" class="form-control"
+                                   value="{{ old('email') }}" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
                         <label>Nomor Telepon</label>
-                        <input type="text" name="phone" class="form-control" required>
+                        <input type="text" name="phone" class="form-control"
+                               value="{{ old('phone') }}" required>
                     </div>
                 </div>
 
@@ -123,43 +120,43 @@
 
                     <div class="mb-3">
                         <label>Alamat Lengkap</label>
-                        <textarea name="address" class="form-control" rows="3" required></textarea>
+                        <textarea name="address" class="form-control" rows="3" required>{{ old('address') }}</textarea>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Kota</label>
-                            <input type="text" name="city" class="form-control" required>
+                            <input type="text" name="city" class="form-control"
+                                   value="{{ old('city') }}" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <label>Kode Pos</label>
-                            <input type="text" name="postal_code" class="form-control" required>
+                            <input type="text" name="postal_code" class="form-control"
+                                   value="{{ old('postal_code') }}" required>
                         </div>
                     </div>
                 </div>
 
-                {{-- METODE PEMBAYARAN (RESPONSIF FIX) --}}
+                {{-- Metode Pembayaran --}}
                 <div class="checkout-card">
                     <h5 class="fw-bold mb-3">Metode Pembayaran</h5>
 
                     <label class="payment-option w-100">
-                        <input type="radio" name="payment" value="transfer" class="form-check-input" checked>
+                        <input type="radio" name="payment" value="transfer"
+                               {{ old('payment','transfer') == 'transfer' ? 'checked' : '' }} required>
                         Transfer Bank
                     </label>
 
                     <label class="payment-option w-100">
-                        <input type="radio" name="payment" value="cod" class="form-check-input">
-                        COD (Cash on Delivery)
-                    </label>
-
-                    <label class="payment-option w-100">
-                        <input type="radio" name="payment" value="ewallet" class="form-check-input">
-                        E-Wallet
+                        <input type="radio" name="payment" value="cash"
+                               {{ old('payment') == 'cash' ? 'checked' : '' }}>
+                        Cash
                     </label>
                 </div>
 
             </form>
+
             @else
                 <div class="checkout-card">
                     <p class="text-muted">Keranjang kosong. Silakan belanja dulu.</p>
@@ -210,7 +207,9 @@
                         <span>Rp {{ number_format($total,0,',','.') }}</span>
                     </div>
 
-                    <button class="btn btn-order w-100 mt-3">
+                    {{-- SUBMIT BUTTON --}}
+                    <button type="submit" form="checkoutForm"
+                            class="btn btn-order w-100 mt-3">
                         Buat Pesanan
                     </button>
 

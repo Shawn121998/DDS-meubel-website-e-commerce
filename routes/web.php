@@ -36,6 +36,14 @@ Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear
 // ================= CHECKOUT =================
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 
+// 🔥 PROSES CHECKOUT (PENTING)
+Route::post('/checkout/process', [CheckoutController::class, 'process'])
+    ->name('checkout.process');
+
+// 🔥 HALAMAN PESANAN SAYA
+Route::get('/my-orders', [CheckoutController::class, 'myOrders'])
+    ->name('orders.index');
+
 
 // ================= LOGIN =================
 Route::get('/login', function () {
