@@ -101,8 +101,8 @@
             </form>
 
             <div class="text-center small mb-3">
-                Belum punya akun?
-                <a href="#">Daftar sekarang</a>
+               Belum punya akun? 
+<a href="{{ route('register') }}">Daftar sekarang</a>
             </div>
 
             <div class="border rounded-3 p-3 bg-light">

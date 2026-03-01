@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,44 +37,38 @@ Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear
 // ================= CHECKOUT =================
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 
-// 🔥 PROSES CHECKOUT (PENTING)
 Route::post('/checkout/process', [CheckoutController::class, 'process'])
     ->name('checkout.process');
 
-// 🔥 HALAMAN PESANAN SAYA
 Route::get('/my-orders', [CheckoutController::class, 'myOrders'])
     ->name('orders.index');
 
 
-// ================= LOGIN =================
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+// ================= AUTH =================
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
 
 // ================= ADMIN =================
 Route::prefix('admin')->group(function () {
 
-    // 1️⃣ Halaman Selamat Datang Admin
     Route::get('/', function () {
         return view('admin.welcome');
     })->name('admin.welcome');
 
-    // 2️⃣ Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
 
-    // 3️⃣ Manajemen Produk
     Route::get('/products', function () {
         return view('admin.products');
     })->name('admin.products');
 
-    // 4️⃣ Manajemen Pesanan
     Route::get('/orders', function () {
         return view('admin.orders');
     })->name('admin.orders');
 
-    // 5️⃣ Manajemen Pelanggan
     Route::get('/customers', function () {
         return view('admin.customers');
     })->name('admin.customers');
