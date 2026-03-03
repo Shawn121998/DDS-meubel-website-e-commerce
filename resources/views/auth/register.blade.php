@@ -1,104 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register - DDS Meubel</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('content')
+<style>
+    body{ background:#F5EFE6; }
 
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    .auth-wrap{
+        min-height: calc(100vh - 120px);
+        display:flex;
+        align-items:flex-start;
+        justify-content:center;
+        padding:40px 12px;
+    }
 
-        .left-section {
-            background: url('{{ asset('images/register.jpg') }}') center/cover no-repeat;
-        }
+    .auth-card{
+        width: 520px;
+        max-width: 100%;
+        background:#fff;
+        border-radius:18px;
+        padding:28px 28px 22px;
+        border:1px solid #E8DFD0;
+        box-shadow: 0 14px 40px rgba(0,0,0,.06);
+    }
 
-        .register-card {
-            width: 100%;
-            max-width: 420px;
-        }
+    .auth-title{
+        font-weight:800;
+        font-size:28px;
+        color:#2F2A25;
+        margin-bottom:6px;
+    }
+    .auth-subtitle{
+        color:#6b5f55;
+        margin-bottom:18px;
+        font-size:14px;
+    }
 
-        .btn-orange {
-            background-color: #d2691e;
-            color: white;
-            border: none;
-        }
+    .form-label{
+        font-weight:600;
+        color:#2F2A25;
+        margin-top:10px;
+        margin-bottom:6px;
+    }
 
-        .btn-orange:hover {
-            background-color: #b85c18;
-        }
-    </style>
-</head>
-<body>
+    .input-group{
+        border:1px solid #E8DFD0;
+        border-radius:12px;
+        overflow:hidden;
+        background:#fff;
+    }
+    .input-group-text{
+        background:#fff;
+        border:0;
+        color:#7A5C3E;
+        padding-left:14px;
+        padding-right:12px;
+    }
+    .form-control{
+        border:0 !important;
+        box-shadow:none !important;
+        padding:12px 14px;
+        font-size:14px;
+    }
+    .form-control::placeholder{
+        color:#a79a8f;
+    }
 
-<div class="container-fluid">
-    <div class="row vh-100">
+    .btn-earth{
+        width:100%;
+        margin-top:16px;
+        background:#7A5C3E;
+        border:0;
+        color:#fff;
+        padding:12px 16px;
+        border-radius:12px;
+        font-weight:700;
+        transition:.2s;
+        box-shadow: 0 10px 24px rgba(122,92,62,.28);
+    }
+    .btn-earth:hover{
+        background:#5E4630;
+        color:#fff;
+        transform: translateY(-1px);
+    }
 
-        <!-- LEFT IMAGE -->
-        <div class="col-lg-6 d-none d-lg-block left-section">
-            <div class="text-white position-absolute bottom-0 p-5">
-                <h2 class="fw-bold">Bergabung dengan DDS Meubel</h2>
-                <p>Dapatkan akses ke koleksi furniture kayu terbaik dan penawaran eksklusif</p>
+    .auth-footer{
+        text-align:center;
+        margin-top:14px;
+        color:#6b5f55;
+        font-size:14px;
+    }
+    .auth-footer a{
+        color:#D97706;
+        font-weight:700;
+        text-decoration:none;
+    }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-title">Buat Akun Baru</div>
+        <div class="auth-subtitle">Daftar untuk mulai berbelanja furniture impian Anda</div>
+
+        {{-- Error Validation --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-        </div>
+        @endif
 
-        <!-- RIGHT FORM -->
-        <div class="col-lg-6 d-flex align-items-center justify-content-center">
-            <div class="register-card">
+        <form method="POST" action="{{ route('register.post') }}">
+            @csrf
 
-                <h2 class="fw-bold mb-2">Buat Akun Baru</h2>
-                <p class="text-muted mb-4">Daftar untuk mulai berbelanja furniture impian Anda</p>
-
-                <form method="POST" action="{{ route('register.post') }}">
-                    @csrf
-
-                    <div class="mb-3">
-                        <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Nomor Telepon</label>
-                        <input type="text" name="phone" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation" class="form-control" required>
-                    </div>
-
-                    <button type="submit" class="btn btn-orange w-100">
-                        Daftar Sekarang →
-                    </button>
-
-                </form>
-
-                <div class="text-center mt-3">
-                    Sudah punya akun?
-                    <a href="{{ route('login') }}" class="text-decoration-none fw-semibold">
-                        Login di sini
-                    </a>
-                </div>
-
+            <label class="form-label">Nama Lengkap</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input type="text" name="name" class="form-control" placeholder="Nama Lengkap"
+                       value="{{ old('name') }}" required>
             </div>
-        </div>
 
+            <label class="form-label">Email</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input type="email" name="email" class="form-control" placeholder="nama@email.com"
+                       value="{{ old('email') }}" required>
+            </div>
+
+            <label class="form-label">Nomor Telepon</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                <input type="text" name="phone" class="form-control" placeholder="08123456789"
+                       value="{{ old('phone') }}" required>
+            </div>
+
+            <label class="form-label">Password</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" required>
+            </div>
+
+            <label class="form-label">Konfirmasi Password</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password" required>
+            </div>
+
+            <button type="submit" class="btn btn-earth">
+                Daftar Sekarang <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+
+            <div class="auth-footer">
+                Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a>
+            </div>
+        </form>
     </div>
 </div>
-
-</body>
-</html>
+@endsection

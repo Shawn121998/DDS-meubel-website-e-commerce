@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
@@ -13,6 +14,11 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
+        // ✅ SIMPLE: kalau belum login, lempar ke login + kasih flag untuk alert
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('need_login', true);
+        }
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -30,7 +36,6 @@ class CheckoutController extends Controller
         }
 
         $total = 0;
-
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }

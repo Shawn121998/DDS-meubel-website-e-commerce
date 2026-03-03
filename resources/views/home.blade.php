@@ -1,180 +1,221 @@
-{{-- resources/views/home.blade.php --}}
 @extends('layouts.app')
 
 @section('content')
 
-@php
-  $products = $products ?? \App\Models\Product::latest()->take(8)->get();
-@endphp
-
-{{-- ================= HERO ================= --}}
-<section class="text-white py-5" style="
-  background: radial-gradient(1200px circle at 10% 10%, rgba(255,193,7,.25), transparent 55%),
-              radial-gradient(900px circle at 90% 30%, rgba(13,110,253,.18), transparent 50%),
-              linear-gradient(180deg, #111827 0%, #0b1220 100%);
-">
-  <div class="container py-4">
-    <div class="row align-items-center g-4">
-      <div class="col-lg-7">
-        <span class="badge rounded-pill mb-3" style="background:#f8f9fa;border:1px solid #e9ecef;color:#111827;">
-          DDS Meubel • Furniture Berkualitas
-        </span>
-
-        <h1 class="display-5 fw-bold lh-sm mb-3">
-          Buat rumah makin nyaman dengan <span class="text-warning">mebel terbaik</span>.
-        </h1>
-
-        <p class="lead text-white-50 mb-4">
-          Pilihan lemari yang berkualitas.
-        </p>
-
-        <a href="{{ url('/products') }}" class="btn btn-light btn-lg rounded-pill px-4">
-          Lihat Produk
-        </a>
-      </div>
-
-      <div class="col-lg-5">
-        <div class="rounded-4 p-4"
-             style="background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);">
-          <div class="text-center text-white-50">
-            <div style="font-size:60px;">🪑</div>
-            <div>Furniture Modern Minimalis</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-{{-- ================= PRODUK ================= --}}
-<section class="py-5 bg-light">
-  <div class="container">
-    <h3 class="fw-bold mb-4">Produk Unggulan</h3>
-
-    <div class="row g-3">
-      @forelse($products as $p)
-      <div class="col-md-3">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h6 class="fw-bold">{{ $p->name }}</h6>
-            <div class="text-success fw-semibold">
-              Rp {{ number_format($p->price,0,',','.') }}
-            </div>
-            <a href="{{ url('/products/'.$p->id) }}"
-               class="btn btn-dark btn-sm mt-3 w-100">
-              Detail
-            </a>
-          </div>
-        </div>
-      </div>
-      @empty
-      <div class="col-12">
-        <div class="alert alert-warning">
-          Produk belum tersedia.
-        </div>
-      </div>
-      @endforelse
-    </div>
-  </div>
-</section>
-
-{{-- ================= LOGIN SECTION (CUSTOMER & ADMIN) ================= --}}
 <style>
-.login-section {
-    background: linear-gradient(135deg, #0f1b2e, #1c2b45);
-    padding: 100px 0;
+body {
+    background-color: #F5EFE6;
+    font-family: 'Poppins', sans-serif;
+    color: #2F2A25;
 }
 
-.login-wrapper-box {
-    background: linear-gradient(135deg, #1f2937, #2d1f1f);
-    border-radius: 30px;
-    padding: 60px;
-    color: white;
-    box-shadow: 0 0 60px rgba(255,140,0,0.15);
+/* HERO */
+.hero-section {
+    padding: 80px 0;
 }
 
-.login-card-item {
-    background: rgba(255,255,255,0.05);
+.badge-earth {
+    background: #E8DFD0;
+    color: #7A5C3E;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+.hero-text {
+    font-size: 16px;
+    color: #5C5248;
+}
+
+.btn-earth {
+    background: #7A5C3E;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-earth:hover {
+    background: #4E3B2A;
+    color: #fff;
+}
+
+.btn-outline-earth {
+    border: 1px solid #CBBBA7;
+    padding: 12px 28px;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.hero-img {
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+/* PRODUCT */
+.section-title {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.product-card {
+    background: #fff;
     border-radius: 20px;
-    padding: 40px;
-    transition: 0.3s ease;
-    height: 100%;
+    padding: 20px;
+    transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
-.login-card-item:hover {
+.product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 0 40px rgba(255,140,0,0.4);
 }
 
-.login-icon {
-    width: 80px;
-    height: 80px;
+.product-card img {
+    width: 100%;
+    border-radius: 14px;
+}
+
+.product-price {
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* FEATURES */
+.features {
+    background: #E8DFD0;
+    padding: 70px 0;
+}
+
+.feature-box {
+    text-align: center;
+}
+
+.feature-icon {
+    background: #7A5C3E;
+    color: #fff;
+    width: 70px;
+    height: 70px;
     border-radius: 20px;
-    background: linear-gradient(135deg, #ff9800, #ff6f00);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 35px;
-    margin-bottom: 25px;
-    box-shadow: 0 0 25px rgba(255,140,0,0.6);
+    margin: auto;
+    font-size: 28px;
 }
 
-.login-btn {
-    background: linear-gradient(135deg, #ff9800, #ff6f00);
-    color: white;
-    padding: 14px 30px;
-    border-radius: 15px;
-    font-weight: bold;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
-    box-shadow: 0 0 25px rgba(255,140,0,0.6);
-    transition: 0.3s ease;
+/* ADMIN PANEL */
+.admin-section {
+    background: linear-gradient(135deg,#4E3B2A,#7A5C3E);
+    color: #fff;
+    padding: 50px;
+    border-radius: 30px;
 }
 
-.login-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 35px rgba(255,140,0,0.9);
-    color: white;
+.btn-admin {
+    background: #D97706;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 14px;
+    border: none;
 }
 </style>
 
-<section class="login-section">
+<div class="container hero-section">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <span class="badge-earth">Kualitas Premium Terjamin</span>
+
+            <h1 class="hero-title">
+                Furniture Kayu <br>
+                Berkualitas untuk <br>
+                Rumah Anda
+            </h1>
+
+            <p class="hero-text">
+                Temukan koleksi lemari dan meja dari kayu jati dan mahoni
+                berkualitas tinggi.
+            </p>
+
+            <div class="mt-4">
+                <a href="{{ route('products.index') }}" class="btn-earth me-2">Lihat Koleksi</a>
+                <a href="#" class="btn-outline-earth">Hubungi Kami</a>
+            </div>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="{{ asset('storage/hero.jpg') }}" class="hero-img" alt="Furniture">
+        </div>
+    </div>
+</div>
+
+
+<!-- PRODUK UNGGULAN -->
+<div class="container py-5">
+    <h2 class="text-center section-title mb-5">Produk Unggulan</h2>
+
+    <div class="row">
+        @foreach($products->take(4) as $product)
+        <div class="col-md-3 mb-4">
+            <div class="product-card">
+                <img src="{{ asset('storage/'.$product->image) }}">
+                <h6 class="mt-3">{{ $product->name }}</h6>
+                <div class="product-price">
+                    Rp {{ number_format($product->price,0,',','.') }}
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+
+
+<!-- FEATURES -->
+<div class="features">
     <div class="container">
-        <div class="login-wrapper-box">
-            <div class="row g-4">
+        <div class="row">
+            <div class="col-md-4 feature-box">
+                <div class="feature-icon">🚚</div>
+                <h5 class="mt-3">Gratis Ongkir</h5>
+                <p>Pembelian di atas Rp 5.000.000</p>
+            </div>
 
-                {{-- CUSTOMER LOGIN --}}
-                <div class="col-md-6">
-                    <div class="login-card-item text-center">
-                        <div class="login-icon">🛍</div>
-                        <h2 class="fw-bold">Customer Login</h2>
-                        <p>
-                            Masuk untuk melihat pesanan dan mendapatkan promo eksklusif.
-                        </p>
-                        <a href="{{ route('login') }}" class="login-btn">
-                            Masuk sebagai Customer →
-                        </a>
-                    </div>
-                </div>
+            <div class="col-md-4 feature-box">
+                <div class="feature-icon">🛡️</div>
+                <h5 class="mt-3">Kualitas Terjamin</h5>
+                <p>Material kayu premium terbaik</p>
+            </div>
 
-                {{-- ADMIN LOGIN --}}
-                <div class="col-md-6">
-                    <div class="login-card-item text-center">
-                        <div class="login-icon">⚙</div>
-                        <h2 class="fw-bold">Admin Login</h2>
-                        <p>
-                            Kelola produk, pesanan, pelanggan & laporan penjualan.
-                        </p>
-                        <a href="{{ route('login') }}" class="login-btn">
-                            Masuk sebagai Admin →
-                        </a>
-                    </div>
-                </div>
-
+            <div class="col-md-4 feature-box">
+                <div class="feature-icon">🎧</div>
+                <h5 class="mt-3">Layanan 24/7</h5>
+                <p>Customer service siap membantu</p>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+
+<!-- ADMIN PANEL -->
+<div class="container my-5">
+    <div class="admin-section d-flex justify-content-between align-items-center flex-wrap">
+        <div>
+            <h3>Admin Panel</h3>
+            <p>Kelola produk, pesanan, pelanggan & laporan</p>
+        </div>
+        <a href="{{ route('admin.dashboard') }}" class="btn-admin">
+            Akses Admin →
+        </a>
+    </div>
+</div>
 
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -13,9 +14,11 @@ use App\Http\Controllers\AuthController;
 |--------------------------------------------------------------------------
 */
 
+
 // ================= HOME =================
 Route::get('/', function () {
-    return view('home');
+    $products = Product::latest()->get(); // FIX: kirim data produk ke home
+    return view('home', compact('products'));
 })->name('home');
 
 
@@ -35,13 +38,15 @@ Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear
 
 
 // ================= CHECKOUT =================
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 
-Route::post('/checkout/process', [CheckoutController::class, 'process'])
-    ->name('checkout.process');
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])
+        ->name('checkout.process');
 
-Route::get('/my-orders', [CheckoutController::class, 'myOrders'])
-    ->name('orders.index');
+    Route::get('/my-orders', [CheckoutController::class, 'myOrders'])
+        ->name('orders.index');
+});
 
 
 // ================= AUTH =================
