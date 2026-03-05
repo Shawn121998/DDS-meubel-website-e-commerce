@@ -16,7 +16,6 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* NAVBAR EARTH TONE */
         .earth-navbar {
             background-color: #F5EFE6;
             padding: 18px 0;
@@ -73,6 +72,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-lg earth-navbar">
@@ -83,7 +83,7 @@
             DDS Meubel
         </a>
 
-        <!-- Toggle for mobile -->
+        <!-- Toggle mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
@@ -92,26 +92,29 @@
         <!-- Center Menu -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
             <ul class="navbar-nav">
+
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
                        href="{{ route('home') }}">
                         Beranda
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}"
                        href="{{ route('products.index') }}">
                         Produk
                     </a>
                 </li>
+
             </ul>
         </div>
 
         <!-- Right Icons -->
         <div class="d-flex align-items-center gap-3">
 
-            <!-- Wishlist -->
-            <a href="#" class="nav-icon">
+            <!-- Wishlist FIX -->
+            <a href="{{ route('wishlist') }}" class="nav-icon">
                 <i class="bi bi-heart"></i>
             </a>
 
@@ -142,6 +145,107 @@
 
 {{-- Bootstrap JS --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<footer style="background:#0f1f3a; color:white; margin-top:60px;">
+<div class="container py-5">
+
+<div class="row g-4">
+
+<!-- DDS MEUBEL -->
+<div class="col-md-3">
+<h5 class="fw-bold">DDS Meubel</h5>
+
+<p style="color:#cbd5e1;">
+Menyediakan furniture kayu berkualitas tinggi seperti
+lemari dan meja dari kayu jati dan mahoni untuk rumah Anda.
+</p>
+</div>
+
+
+<!-- NAVIGASI -->
+<div class="col-md-3">
+<h5 class="fw-bold">Navigasi</h5>
+
+<ul class="list-unstyled">
+
+<li>
+<a href="{{ url('/') }}" style="color:#cbd5e1; text-decoration:none;">
+Beranda
+</a>
+</li>
+
+<li>
+<a href="{{ route('products.index') }}" style="color:#cbd5e1; text-decoration:none;">
+Produk
+</a>
+</li>
+
+<li>
+<a href="{{ route('cart.index') }}" style="color:#cbd5e1; text-decoration:none;">
+Keranjang
+</a>
+</li>
+
+<li>
+<a href="{{ route('wishlist') }}" style="color:#cbd5e1; text-decoration:none;">
+Wishlist
+</a>
+</li>
+
+</ul>
+</div>
+
+
+<!-- AKUN -->
+<div class="col-md-3">
+<h5 class="fw-bold">Akun</h5>
+
+<ul class="list-unstyled">
+
+<li>
+<a href="{{ route('login') }}" style="color:#cbd5e1; text-decoration:none;">
+Login
+</a>
+</li>
+
+<li>
+<a href="{{ route('register') }}" style="color:#cbd5e1; text-decoration:none;">
+Registrasi
+</a>
+</li>
+
+<li>
+<a href="#" style="color:#cbd5e1; text-decoration:none;">
+Pesanan Saya
+</a>
+</li>
+
+</ul>
+</div>
+
+
+<!-- KONTAK -->
+<div class="col-md-3">
+<h5 class="fw-bold">Kontak</h5>
+
+<p style="color:#cbd5e1;">Email: info@ddsmeubel.com</p>
+<p style="color:#cbd5e1;">Email: shawnsumual@gmail.com</p>
+<p style="color:#cbd5e1;">Telepon: (62) 89698118036 </p>
+<p style="color:#cbd5e1;">WhatsApp: 082190104062</p>
+
+</div>
+
+</div>
+
+<hr style="border-color:#334155; margin-top:30px;">
+
+<div class="text-center" style="color:#cbd5e1;">
+© 2026 DDS Meubel. All rights reserved.
+</div>
+
+</div>
+</footer>
 
 </body>
 </html>
