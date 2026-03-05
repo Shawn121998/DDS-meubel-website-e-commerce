@@ -96,23 +96,23 @@
                 </div>
 
                 <button type="submit" class="btn btn-orange w-100 mb-3">
-                    Masuk →
+                    Customer Login →
                 </button>
             </form>
 
             <div class="text-center small mb-3">
                Belum punya akun? 
-<a href="{{ route('register') }}">Daftar sekarang</a>
+<a href="{{ route('register') }}">Register Now</a>
             </div>
 
             <div class="border rounded-3 p-3 bg-light">
-                <div class="small fw-semibold mb-2">🔑 Akun Demo:</div>
+                <div class="small fw-semibold mb-2"> </div>
                 <div class="small">Email: admin@ddsmeubel.com</div>
                 <div class="small mb-2">Password: (kosongkan saja)</div>
 
                 <a href="{{ route('admin.dashboard') }}"
                    class="btn btn-orange w-100 mt-2">
-                    Masuk sebagai Admin →
+                    Admin login →
                 </a>
             </div>
 

@@ -8,7 +8,8 @@
         @forelse($products as $product)
             <div class="col-md-3 mb-4">
                 <div class="card shadow-sm">
-                    <img src="{{ $product->image ?? 'https://via.placeholder.com/300' }}" 
+
+                    <img src="{{ asset('images/' . $product->image) }}" 
                          class="card-img-top" 
                          style="height:200px; object-fit:cover;">
 

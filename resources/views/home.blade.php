@@ -60,6 +60,8 @@ body {
 .hero-img {
     border-radius: 24px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    max-width: 500px;
+    width: 100%;
 }
 
 /* PRODUCT */
@@ -153,7 +155,8 @@ body {
         </div>
 
         <div class="col-md-6 text-center">
-            <img src="{{ asset('storage/hero.jpg') }}" class="hero-img" alt="Furniture">
+            <!-- GAMBAR HERO -->
+            <img src="{{ asset('images/lemari.jpg') }}" class="hero-img" alt="Furniture">
         </div>
     </div>
 </div>
@@ -167,7 +170,7 @@ body {
         @foreach($products->take(4) as $product)
         <div class="col-md-3 mb-4">
             <div class="product-card">
-                <img src="{{ asset('storage/'.$product->image) }}">
+                <img src="{{ asset('images/'.$product->image) }}">
                 <h6 class="mt-3">{{ $product->name }}</h6>
                 <div class="product-price">
                     Rp {{ number_format($product->price,0,',','.') }}
