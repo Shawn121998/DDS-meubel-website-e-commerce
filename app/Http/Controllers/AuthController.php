@@ -9,17 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
     // ================= LOGIN PAGE =================
     public function showLogin()
     {
         return view('auth.login');
     }
 
+
     // ================= REGISTER PAGE =================
     public function showRegister()
     {
         return view('auth.register');
     }
+
 
     // ================= REGISTER CUSTOMER =================
     public function register(Request $request)
@@ -31,19 +34,21 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed'
         ]);
 
+        // SIMPAN USER BARU
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
 
-            // otomatis customer
+            // otomatis menjadi customer
             'role' => 'customer'
         ]);
 
         return redirect()->route('login')
             ->with('success', 'Akun berhasil dibuat! Silakan login.');
     }
+
 
     // ================= LOGIN SYSTEM =================
     public function login(Request $request)
@@ -53,7 +58,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email','password');
 
         if (Auth::attempt($credentials)) {
 
@@ -61,19 +66,22 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
-            // ===== ADMIN LOGIN =====
+            // LOGIN ADMIN
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard')
+                    ->with('success','Selamat datang Admin!');
             }
 
-            // ===== CUSTOMER LOGIN =====
-            return redirect()->route('home');
+            // LOGIN CUSTOMER
+            return redirect()->route('home')
+                ->with('success','Login berhasil!');
         }
 
         return back()->withErrors([
             'email' => 'Email atau password salah.'
         ])->onlyInput('email');
     }
+
 
     // ================= LOGOUT =================
     public function logout(Request $request)
@@ -83,6 +91,8 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->route('home')
+            ->with('success','Anda berhasil logout.');
     }
+
 }

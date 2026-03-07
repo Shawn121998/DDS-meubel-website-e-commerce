@@ -5,28 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Order;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Hitung total produk
-        $totalProduk = Product::count();
+        $totalProducts = Product::count();
 
-        // Karena belum ada tabel Order, kita buat 0 dulu
-        $totalPesanan = 0;
+        $totalOrders = Order::count();
 
-        // Total pelanggan (User)
-        $totalPelanggan = User::count();
+        $totalCustomers = User::where('role', 'customer')->count();
 
-        // Pesanan terbaru kosong dulu
-        $pesananTerbaru = collect();
+        $latestOrders = Order::latest()->take(5)->get();
 
         return view('admin.dashboard', compact(
-            'totalProduk',
-            'totalPesanan',
-            'totalPelanggan',
-            'pesananTerbaru'
+            'totalProducts',
+            'totalOrders',
+            'totalCustomers',
+            'latestOrders'
         ));
     }
 }
