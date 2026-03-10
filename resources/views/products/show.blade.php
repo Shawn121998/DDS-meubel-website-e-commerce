@@ -10,13 +10,18 @@
     @endif
 
     <div class="row">
+
+        {{-- GAMBAR PRODUK --}}
         <div class="col-md-6">
-            <img src="{{ $product->image ?? 'https://via.placeholder.com/400' }}" 
-                 class="img-fluid rounded shadow-sm">
+            <img src="{{ $product->image ? asset('images/'.$product->image) : 'https://via.placeholder.com/400' }}" 
+                 class="img-fluid rounded shadow-sm"
+                 style="width:100%; max-height:420px; object-fit:cover;">
         </div>
 
+        {{-- DETAIL PRODUK --}}
         <div class="col-md-6">
-            <h2>{{ $product->name }}</h2>
+
+            <h2 class="fw-bold">{{ $product->name }}</h2>
 
             <p class="text-success fs-4 fw-bold">
                 Rp {{ number_format($product->price, 0, ',', '.') }}
@@ -28,7 +33,7 @@
 
             <p class="mt-3">{{ $product->description }}</p>
 
-            {{-- Tombol Tambah ke Keranjang (FIX POST) --}}
+            {{-- Tambah ke Keranjang --}}
             <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-3">
                 @csrf
                 <button type="submit" class="btn btn-success">
@@ -37,10 +42,10 @@
             </form>
 
             {{-- Tombol Kembali --}}
-            <a href="{{ route('products.index') }}" 
-               class="btn btn-secondary mt-3">
+            <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">
                 Kembali
             </a>
+
         </div>
     </div>
 </div>

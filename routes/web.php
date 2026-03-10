@@ -17,13 +17,6 @@ use App\Http\Controllers\Admin\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
-| WEB ROUTES
-|--------------------------------------------------------------------------
-*/
-
-
-/*
-|--------------------------------------------------------------------------
 | HOME
 |--------------------------------------------------------------------------
 */
@@ -66,7 +59,6 @@ Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear
 */
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -77,7 +69,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| CHECKOUT
+| CHECKOUT + USER ORDERS
 |--------------------------------------------------------------------------
 */
 
@@ -106,10 +98,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])
         ->name('wishlist');
 
-    Route::get('/wishlist/add/{id}', [WishlistController::class, 'add'])
+    Route::post('/wishlist/add/{id}', [WishlistController::class, 'add'])
         ->name('wishlist.add');
 
-    Route::get('/wishlist/remove/{id}', [WishlistController::class, 'remove'])
+    Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])
         ->name('wishlist.remove');
 
 });
@@ -123,15 +115,12 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
-    // redirect admin/
     Route::get('/', function () {
         return redirect()->route('admin.dashboard');
     });
 
     /*
-    |---------------------------------------
     | DASHBOARD
-    |---------------------------------------
     */
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -139,9 +128,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
     /*
-    |---------------------------------------
-    | MANAJEMEN PRODUK
-    |---------------------------------------
+    | PRODUK
     */
 
     Route::get('/products', [AdminProductController::class, 'index'])
@@ -149,9 +136,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
     /*
-    |---------------------------------------
-    | MANAJEMEN PESANAN
-    |---------------------------------------
+    | ORDERS
     */
 
     Route::get('/orders', [OrderController::class, 'index'])
@@ -159,9 +144,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
     /*
-    |---------------------------------------
-    | MANAJEMEN PELANGGAN
-    |---------------------------------------
+    | CUSTOMERS
     */
 
     Route::get('/customers', [CustomerController::class, 'index'])
