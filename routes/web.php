@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -34,6 +35,20 @@ Route::get('/', function () {
 */
 
 Route::resource('products', ProductController::class);
+
+
+/*
+|--------------------------------------------------------------------------
+| REVIEW
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function () {
+
+    Route::post('/review', [ReviewController::class, 'store'])
+        ->name('review.store');
+
+});
 
 
 /*

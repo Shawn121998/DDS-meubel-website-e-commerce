@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
+
     public function index()
     {
-        $wishlists = Wishlist::where('user_id', Auth::id())->get();
+        $wishlists = Wishlist::with('product')
+            ->where('user_id', Auth::id())
+            ->get();
 
         return view('wishlist.index', compact('wishlists'));
     }
+
 
     public function add($id)
     {
@@ -22,13 +26,7 @@ class WishlistController extends Controller
             'product_id' => $id
         ]);
 
-        return redirect()->back()->with('success','Produk ditambahkan ke wishlist');
+        return redirect()->back()->with('success', 'Produk ditambahkan ke wishlist');
     }
 
-    public function remove($id)
-    {
-        Wishlist::where('id',$id)->delete();
-
-        return redirect()->back()->with('success','Produk dihapus dari wishlist');
-    }
 }
