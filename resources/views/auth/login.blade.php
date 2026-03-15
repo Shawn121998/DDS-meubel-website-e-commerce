@@ -81,7 +81,7 @@ display:none;
 <div class="login-right">
 <div class="login-card">
 
-<h3 class="fw-bold mb-2">Selamat Datang Kembali</h3>
+<h3 class="fw-bold mb-2">welcome back</h3>
 <p class="text-muted mb-4">Masuk ke akun Anda untuk melanjutkan</p>
 
 {{-- ERROR MESSAGE --}}

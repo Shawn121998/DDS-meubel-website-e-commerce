@@ -10,21 +10,16 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
 
-    // ================= LOGIN PAGE =================
     public function showLogin()
     {
         return view('auth.login');
     }
 
-
-    // ================= REGISTER PAGE =================
     public function showRegister()
     {
         return view('auth.register');
     }
 
-
-    // ================= REGISTER CUSTOMER =================
     public function register(Request $request)
     {
         $request->validate([
@@ -34,31 +29,29 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed'
         ]);
 
-        // SIMPAN USER BARU
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-
-            // otomatis menjadi customer
             'role' => 'customer'
         ]);
 
         return redirect()->route('login')
-            ->with('success', 'Akun berhasil dibuat! Silakan login.');
+            ->with('success','Akun berhasil dibuat! Silakan login.');
     }
 
-
-    // ================= LOGIN SYSTEM =================
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email' => ['required','email'],
+            'password' => ['required']
         ]);
 
-        $credentials = $request->only('email','password');
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
 
         if (Auth::attempt($credentials)) {
 
@@ -66,24 +59,18 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
-            // LOGIN ADMIN
-            if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard')
-                    ->with('success','Selamat datang Admin!');
+            if ($user->role == 'admin') {
+                return redirect()->route('admin.dashboard');
             }
 
-            // LOGIN CUSTOMER
-            return redirect()->route('home')
-                ->with('success','Login berhasil!');
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
             'email' => 'Email atau password salah.'
-        ])->onlyInput('email');
+        ])->withInput();
     }
 
-
-    // ================= LOGOUT =================
     public function logout(Request $request)
     {
         Auth::logout();
