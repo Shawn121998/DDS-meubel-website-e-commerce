@@ -1,133 +1,130 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel - DDS Meubel</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>DDS Meubel Admin</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-    <style>
-        body {
-            background: #f4f6f9;
-        }
+<style>
 
-        .sidebar {
-            width: 260px;
-            min-height: 100vh;
-            background: #ffffff;
-            border-right: 1px solid #eee;
-        }
+body {
+    background: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        .sidebar h4 {
-            font-weight: bold;
-        }
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    background: #fff;
+    border-right: 1px solid #eee;
+    padding: 20px;
+}
 
-        .sidebar .nav-link {
-            color: #555;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
+.sidebar h5 {
+    font-weight: bold;
+}
 
-        .sidebar .nav-link.active {
-            background: #0d1b2a;
-            color: #fff;
-        }
+.sidebar p {
+    font-size: 13px;
+    color: gray;
+}
 
-        .sidebar .nav-link:hover {
-            background: #0d1b2a;
-            color: #fff;
-        }
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
 
-        .content-area {
-            flex: 1;
-            padding: 30px;
-        }
+/* ACTIVE MENU */
+.sidebar a.active {
+    background: #0d1b2a;
+    color: #fff;
+}
 
-        .card-stat {
-            border-radius: 15px;
-            padding: 25px;
-            border: none;
-            background: #ffffff;
-        }
+.sidebar a:hover {
+    background: #0d1b2a;
+    color: #fff;
+}
 
-        @media (max-width: 992px) {
-            .sidebar {
-                position: fixed;
-                z-index: 1000;
-                left: -260px;
-                transition: 0.3s;
-            }
+/* CONTENT */
+.content {
+    margin-left: 260px;
+    padding: 30px;
+}
 
-            .sidebar.show {
-                left: 0;
-            }
-        }
-    </style>
+/* CARD */
+.card-stat {
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    background: #fff;
+}
+
+.icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-blue { background: #e0ecff; color: #3b82f6; }
+.icon-green { background: #dcfce7; color: #22c55e; }
+.icon-purple { background: #f3e8ff; color: #a855f7; }
+
+/* TABLE */
+.table {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<div class="d-flex">
+<div class="sidebar">
 
-    {{-- SIDEBAR --}}
-    <div class="sidebar p-4" id="sidebar">
-        <h4>DDS Meubel</h4>
-        <small class="text-muted">Admin Panel</small>
+<h5>DDS Meubel</h5>
+<p>Admin Panel</p>
 
-        <hr>
+<a href="{{ url('/admin/dashboard') }}" class="active">
+<i class="fa fa-home"></i> Dashboard
+</a>
 
-        <ul class="nav flex-column">
+<a href="{{ url('/admin/products') }}">
+<i class="fa fa-box"></i> Manajemen Produk
+</a>
 
-            <li class="nav-item">
-                <a href="{{ route('admin.dashboard') }}"
-                   class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    Dashboard
-                </a>
-            </li>
+<a href="{{ url('/admin/orders') }}">
+<i class="fa fa-shopping-cart"></i> Manajemen Pesanan
+</a>
 
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link">
-                    Manajemen Produk
-                </a>
-            </li>
+<a href="{{ url('/admin/customers') }}">
+<i class="fa fa-users"></i> Manajemen Pelanggan
+</a>
 
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link">
-                    Manajemen Pesanan
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a href="#"
-                   class="nav-link">
-                    Manajemen Pelanggan
-                </a>
-            </li>
-
-            <li class="nav-item mt-3">
-                <a href="{{ route('home') }}" class="nav-link">
-                    Kembali ke Toko
-                </a>
-            </li>
-
-        </ul>
-    </div>
-
-    {{-- CONTENT --}}
-    <div class="content-area w-100">
-        @yield('content')
-    </div>
+<a href="{{ url('/') }}">
+<i class="fa fa-arrow-left"></i> Kembali ke Toko
+</a>
 
 </div>
 
-<script>
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('show');
-    }
-</script>
+<div class="content">
+    @yield('content')
+</div>
 
 </body>
 </html>

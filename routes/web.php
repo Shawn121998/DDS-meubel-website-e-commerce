@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CustomOrderController; // TAMBAHAN
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -39,14 +40,26 @@ Route::resource('products', ProductController::class);
 
 /*
 |--------------------------------------------------------------------------
-| REVIEW
+| AUTH REQUIRED FEATURES (DIGABUNG)
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth')->group(function () {
 
+    /*
+    | REVIEW
+    */
     Route::post('/review', [ReviewController::class, 'store'])
         ->name('review.store');
+
+    /*
+    | CUSTOM ORDER (FITUR BARU)
+    */
+    Route::get('/custom-order', [CustomOrderController::class, 'index'])
+        ->name('custom.index');
+
+    Route::post('/custom-order', [CustomOrderController::class, 'store'])
+        ->name('custom.store');
 
 });
 
@@ -128,41 +141,37 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware('auth')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
-        return redirect()->route('admin.dashboard');
+        return redirect('/admin/dashboard');
     });
 
     /*
     | DASHBOARD
     */
-
-    Route::get('/dashboard', [DashboardController::class, 'index'])
+    Route::get('/dashboard', [DashboardController::class,'index'])
         ->name('admin.dashboard');
 
 
     /*
-    | PRODUK
+    | PRODUCTS
     */
-
-    Route::get('/products', [AdminProductController::class, 'index'])
-        ->name('admin.products');
+    Route::get('/products', [AdminProductController::class, 'index']);
+    Route::get('/products/create', [AdminProductController::class, 'create']);
 
 
     /*
     | ORDERS
     */
-
-    Route::get('/orders', [OrderController::class, 'index'])
+    Route::get('/orders', [OrderController::class,'index'])
         ->name('admin.orders');
 
 
     /*
     | CUSTOMERS
     */
-
-    Route::get('/customers', [CustomerController::class, 'index'])
+    Route::get('/customers', [CustomerController::class,'index'])
         ->name('admin.customers');
 
 });

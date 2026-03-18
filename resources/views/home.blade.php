@@ -150,12 +150,13 @@ body {
 
             <div class="mt-4">
                 <a href="{{ route('products.index') }}" class="btn-earth me-2">Lihat Koleksi</a>
-                <a href="#" class="btn-outline-earth">Hubungi Kami</a>
+                <a href="{{ route('custom.index') }}" class="btn-outline-earth">
+                    Pesan Custom
+                </a>
             </div>
         </div>
 
         <div class="col-md-6 text-center">
-            <!-- GAMBAR HERO -->
             <img src="{{ asset('images/lemari.jpg') }}" class="hero-img" alt="Furniture">
         </div>
     </div>

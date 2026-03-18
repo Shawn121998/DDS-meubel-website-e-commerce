@@ -9,8 +9,8 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::latest()->get();
-
-        return view('admin.orders', compact('orders'));
+        return view('admin.orders', [
+            'orders' => Order::with('user')->get()
+        ]);
     }
 }
