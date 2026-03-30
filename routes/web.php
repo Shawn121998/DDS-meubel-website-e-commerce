@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 
 use App\Http\Controllers\ProductController;
@@ -9,52 +10,42 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\CustomOrderController; // TAMBAHAN
+use App\Http\Controllers\CustomOrderController;
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\CustomerController;
 
-
 /*
 |--------------------------------------------------------------------------
 | HOME
 |--------------------------------------------------------------------------
 */
-
 Route::get('/', function () {
     $products = Product::latest()->get();
     return view('home', compact('products'));
 })->name('home');
-
 
 /*
 |--------------------------------------------------------------------------
 | PRODUCTS
 |--------------------------------------------------------------------------
 */
-
 Route::resource('products', ProductController::class);
-
 
 /*
 |--------------------------------------------------------------------------
-| AUTH REQUIRED FEATURES (DIGABUNG)
+| AUTH REQUIRED FEATURES
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('auth')->group(function () {
 
-    /*
-    | REVIEW
-    */
+    // REVIEW
     Route::post('/review', [ReviewController::class, 'store'])
         ->name('review.store');
 
-    /*
-    | CUSTOM ORDER (FITUR BARU)
-    */
+    // CUSTOM ORDER
     Route::get('/custom-order', [CustomOrderController::class, 'index'])
         ->name('custom.index');
 
@@ -63,13 +54,11 @@ Route::middleware('auth')->group(function () {
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | CART
 |--------------------------------------------------------------------------
 */
-
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
@@ -79,28 +68,41 @@ Route::post('/cart/decrease/{id}', [CartController::class, 'decrease'])->name('c
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
-
 /*
 |--------------------------------------------------------------------------
 | AUTH
 |--------------------------------------------------------------------------
 */
-
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+/* ✅ FIX LOGOUT (HARUS POST) */
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| PROFILE (FIX - DI LUAR ADMIN)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', function () {
+        return view('profile.index');
+    })->name('profile');
+});
 
 /*
 |--------------------------------------------------------------------------
 | CHECKOUT + USER ORDERS
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('auth')->group(function () {
 
     Route::get('/checkout', [CheckoutController::class, 'index'])
@@ -114,13 +116,11 @@ Route::middleware('auth')->group(function () {
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | WISHLIST
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('auth')->group(function () {
 
     Route::get('/wishlist', [WishlistController::class, 'index'])
@@ -134,43 +134,30 @@ Route::middleware('auth')->group(function () {
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | ADMIN PANEL
 |--------------------------------------------------------------------------
 */
-
 Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
         return redirect('/admin/dashboard');
     });
 
-    /*
-    | DASHBOARD
-    */
+    // DASHBOARD
     Route::get('/dashboard', [DashboardController::class,'index'])
         ->name('admin.dashboard');
 
-
-    /*
-    | PRODUCTS
-    */
+    // PRODUCTS
     Route::get('/products', [AdminProductController::class, 'index']);
     Route::get('/products/create', [AdminProductController::class, 'create']);
 
-
-    /*
-    | ORDERS
-    */
+    // ORDERS
     Route::get('/orders', [OrderController::class,'index'])
         ->name('admin.orders');
 
-
-    /*
-    | CUSTOMERS
-    */
+    // CUSTOMERS
     Route::get('/customers', [CustomerController::class,'index'])
         ->name('admin.customers');
 

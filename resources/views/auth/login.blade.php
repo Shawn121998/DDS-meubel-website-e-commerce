@@ -10,7 +10,7 @@
 
 .login-left{
     flex:1;
-    background:url('https://images.unsplash.com/photo-1615874959474-d609969a20ed') center center/cover no-repeat;
+    background:url('{{ asset('images/lemari-kitchen-set.jpg') }}') center center/cover no-repeat;
     position:relative;
     color:white;
     display:flex;
@@ -68,16 +68,14 @@ display:none;
 <div class="login-wrapper">
 
 {{-- LEFT --}}
-
 <div class="login-left">
-<div class="login-left-content">
-<h2 class="fw-bold">DDS Meubel</h2>
-<p>Furniture Kayu Berkualitas Tinggi untuk Rumah Impian Anda</p>
-</div>
+    <div class="login-left-content">
+        <h2 class="fw-bold">DDS Meubel</h2>
+        <p>Furniture Kayu Berkualitas Tinggi untuk Rumah Impian Anda</p>
+    </div>
 </div>
 
 {{-- RIGHT --}}
-
 <div class="login-right">
 <div class="login-card">
 
@@ -86,14 +84,12 @@ display:none;
 
 {{-- ERROR MESSAGE --}}
 @if($errors->any())
-
 <div class="alert alert-danger">
 {{ $errors->first() }}
 </div>
 @endif
 
 {{-- CUSTOMER LOGIN --}}
-
 <form action="{{ route('login.process') }}" method="POST">
 @csrf
 
@@ -127,7 +123,6 @@ Belum punya akun?
 </div>
 
 {{-- ADMIN LOGIN --}}
-
 <div class="border rounded-3 p-3 bg-light">
 
 <div class="small fw-bold mb-2">Admin Login Cepat</div>
