@@ -5,24 +5,21 @@
 <div class="container mt-4">
 
 @if(session('success'))
-
 <div class="alert alert-success">
-{{ session('success') }}
+    {{ session('success') }}
 </div>
 @endif
 
 <div class="row">
 
 {{-- GAMBAR PRODUK --}}
-
 <div class="col-md-6">
-<img src="{{ $product->image ? asset('images/'.$product->image) : 'https://via.placeholder.com/400' }}"
-class="img-fluid rounded shadow-sm"
-style="width:100%; max-height:420px; object-fit:cover;">
+    <img src="{{ $product->image ? asset('images/'.$product->image) : 'https://via.placeholder.com/400' }}"
+    class="img-fluid rounded shadow-sm"
+    style="width:100%; max-height:420px; object-fit:cover;">
 </div>
 
 {{-- DETAIL PRODUK --}}
-
 <div class="col-md-6">
 
 <h2 class="fw-bold">{{ $product->name }}</h2>
@@ -38,7 +35,6 @@ Rp {{ number_format($product->price, 0, ',', '.') }}
 <p class="mt-3">{{ $product->description }}</p>
 
 {{-- Tombol Keranjang + Wishlist --}}
-
 <div class="d-flex gap-2 mt-3">
 
 <form action="{{ route('cart.add', $product->id) }}" method="POST">
@@ -57,8 +53,26 @@ Tambah ke Keranjang
 
 </div>
 
-{{-- Tombol Kembali --}} <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">
-Kembali </a>
+{{-- ✅ FORM ORDER (INI YANG PENTING) --}}
+<form action="{{ route('order.store') }}" method="POST" class="mt-3">
+    @csrf
+
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+    <div class="mb-2">
+        <label>Jumlah:</label>
+        <input type="number" name="quantity" class="form-control" min="1" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Order Sekarang
+    </button>
+</form>
+
+{{-- Tombol Kembali --}}
+<a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">
+Kembali
+</a>
 
 </div>
 </div>

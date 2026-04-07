@@ -11,10 +11,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CustomOrderController;
+use App\Http\Controllers\OrderController; // ✅ TAMBAHAN
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController;
 
 /*
@@ -33,6 +34,9 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::resource('products', ProductController::class);
+
+/* ✅ TAMBAHAN ROUTE PRODUK (VERSI INDONESIA) */
+Route::resource('produk', ProductController::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,7 +83,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
-/* ✅ FIX LOGOUT (HARUS POST) */
+/* ✅ FIX LOGOUT */
 Route::post('/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
@@ -89,7 +93,7 @@ Route::post('/logout', function () {
 
 /*
 |--------------------------------------------------------------------------
-| PROFILE (FIX - DI LUAR ADMIN)
+| PROFILE
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -113,6 +117,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-orders', [CheckoutController::class, 'myOrders'])
         ->name('orders.index');
+
+    // ✅ TAMBAHAN ORDER
+    Route::post('/order', [OrderController::class, 'store'])
+        ->name('order.store');
 
 });
 
@@ -154,7 +162,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/products/create', [AdminProductController::class, 'create']);
 
     // ORDERS
-    Route::get('/orders', [OrderController::class,'index'])
+    Route::get('/orders', [AdminOrderController::class,'index'])
         ->name('admin.orders');
 
     // CUSTOMERS
