@@ -170,3 +170,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         ->name('admin.customers');
 
 });
+
+Route::get('/admin/dashboard-data', function () {
+    return response()->json([
+        'produk' => \App\Models\Product::count(),
+        'pesanan' => \App\Models\Order::count(),
+        'pelanggan' => \App\Models\User::count(),
+    ]);
+});

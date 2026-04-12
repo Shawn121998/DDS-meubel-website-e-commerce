@@ -11,26 +11,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Total Produk
-        $totalProducts = Product::count();
-
-        // Total Pesanan
-        $totalOrders = Order::count();
-
-        // Total Customer
-        $totalCustomers = User::where('role', 'customer')->count();
-
-        // Pesanan terbaru
-        $latestOrders = Order::with('user')
-                        ->latest()
-                        ->take(5)
-                        ->get();
-
         return view('admin.dashboard', [
-            'totalProducts' => $totalProducts,
-            'totalOrders' => $totalOrders,
-            'totalCustomers' => $totalCustomers,
-            'latestOrders' => $latestOrders
+            'produk' => Product::count(),
+            'pesanan' => Order::count(),
+            'pelanggan' => User::count(),
+            'orders' => Order::latest()->take(5)->get()
         ]);
     }
 }
