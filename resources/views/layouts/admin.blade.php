@@ -112,6 +112,10 @@ body {
 <i class="fa fa-shopping-cart"></i> Manajemen Pesanan
 </a>
 
+<a href="{{ route('admin.reports.index') }}">
+<i class="fa fa-chart-bar"></i> Laporan Penjualan
+</a>
+
 <a href="{{ url('/admin/customers') }}">
 <i class="fa fa-users"></i> Manajemen Pelanggan
 </a>

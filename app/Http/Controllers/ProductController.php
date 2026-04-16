@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -30,6 +31,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
+            'slug' => Str::slug($request->name),
         ]);
 
         return redirect()->route('products.index')
@@ -62,6 +64,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
+            'slug' => Str::slug($request->name),
         ]);
 
         return redirect()->route('products.index')

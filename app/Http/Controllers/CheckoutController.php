@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,59 +10,98 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        return view('checkout.index');
-    }
-
-    public function process(Request $request)
-    {
-        // ✅ SIMPLE: kalau belum login, lempar ke login + kasih flag untuk alert
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('need_login', true);
-        }
-
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'postal_code' => 'required',
-            'payment' => 'required',
-        ]);
-
-        $cart = session('cart', []);
+        $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('cart.index');
+            return redirect()->route('cart.index')
+                ->with('error', 'Keranjang belanja kosong.');
         }
+
+        $subtotal = 0;
+
+        foreach ($cart as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
+
+        return view('checkout.index', compact('cart', 'subtotal'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string',
+            'city' => 'required|string|max:100',
+            'postal_code' => 'required|string|max:10',
+        ]);
+
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('cart.index')
+                ->with('error', 'Keranjang belanja kosong.');
+        }
+
+        $firstKey = array_key_first($cart);
+        $firstItem = $cart[$firstKey];
 
         $total = 0;
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
 
-        $order = [
-            'order_id' => '#' . time(),
-            'date' => now()->format('d/m/Y'),
-            'items' => $cart,
+        // ✅ SIMPAN ORDER
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'product_id' => $firstKey,
+            'quantity' => $firstItem['quantity'],
             'total' => $total,
-            'address' => $request->address . ', ' . $request->city . ', ' . $request->postal_code,
-            'payment' => $request->payment == 'transfer' ? 'Transfer Bank' : 'Cash',
-            'status' => 'Menunggu Pembayaran'
-        ];
+            'status' => 'menunggu pembayaran',
+            'customer_name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'city' => $request->city,
+            'postal_code' => $request->postal_code,
+            'payment_method' => $request->payment_method ?? 'Transfer Bank',
+            'order_number' => '#' . time() . rand(1000, 9999),
+            'type' => 'reguler',
+        ]);
 
-        session()->put('last_order', $order);
-
-        // kosongkan cart
+        // ✅ HAPUS CART
         session()->forget('cart');
 
-        return redirect()->route('orders.index');
+        // ✅ REDIRECT KE HALAMAN KONFIRMASI
+        return redirect()->route('checkout.success', $order->id);
+    }
+
+    public function process(Request $request)
+    {
+        return $this->store($request);
     }
 
     public function myOrders()
     {
-        $order = session('last_order');
+        $orders = Order::where('user_id', Auth::id())
+            ->latest()
+            ->get();
 
-        return view('orders.index', compact('order'));
+        $customOrders = \App\Models\CustomOrder::where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('orders.index', compact('orders', 'customOrders'));
+    }
+
+    // ✅ TAMBAHAN HALAMAN SUCCESS
+    public function success($id)
+    {
+        $order = Order::with('product')
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        return view('checkout.success', compact('order'));
     }
 }

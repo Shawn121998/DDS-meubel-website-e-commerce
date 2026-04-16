@@ -22,4 +22,9 @@ class Product extends Model
     {
         return $this->hasMany(\App\Models\Review::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(\App\Models\Category::class);
+    }
 }

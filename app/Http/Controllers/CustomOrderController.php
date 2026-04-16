@@ -37,9 +37,14 @@ class CustomOrderController extends Controller
         // GABUNG SIZE
         $size = $panjang . ' x ' . $lebar . ' x ' . $tinggi;
 
+        // ✅ TAMBAHAN PENGAMAN (BIAR TIDAK ERROR)
+        $name = $name ?: 'Tidak ada nama';
+        $description = $description ?: '-';
+        $material = $material ?: '-';
+
         // SIMPAN KE DATABASE
         CustomOrder::create([
-            'user_id' => auth()->id() ?? 1, // 🔥 biar tidak error kalau belum login
+            'user_id' => auth()->id() ?? 1,
             'name' => $name,
             'description' => $description,
             'material' => $material,

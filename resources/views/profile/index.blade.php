@@ -150,7 +150,7 @@ use Carbon\Carbon;
             <div class="stat-box d-flex justify-content-between align-items-center">
                 <div>
                     <small>Total Pesanan</small>
-                    <h5 class="mb-0">0</h5>
+                    <h5 class="mb-0" id="totalPesanan">0</h5>
                 </div>
                 <div class="stat-icon bg-blue">
                     <i class="bi bi-bag"></i>
@@ -160,7 +160,7 @@ use Carbon\Carbon;
             <div class="stat-box d-flex justify-content-between align-items-center">
                 <div>
                     <small>Pesanan Reguler</small>
-                    <h5 class="mb-0">0</h5>
+                    <h5 class="mb-0" id="pesananReguler">0</h5>
                 </div>
                 <div class="stat-icon bg-orange">
                     <i class="bi bi-box-seam"></i>
@@ -170,7 +170,7 @@ use Carbon\Carbon;
             <div class="stat-box d-flex justify-content-between align-items-center">
                 <div>
                     <small>Pesanan Custom</small>
-                    <h5 class="mb-0">0</h5>
+                    <h5 class="mb-0" id="pesananCustom">0</h5>
                 </div>
                 <div class="stat-icon bg-purple">
                     <i class="bi bi-box"></i>
@@ -228,5 +228,21 @@ use Carbon\Carbon;
 </div>
 
 </div>
+
+<!-- ✅ TAMBAHAN SCRIPT REAL-TIME -->
+<script>
+function loadStatistik() {
+    fetch("{{ route('user.statistik') }}")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('totalPesanan').innerText = data.total;
+            document.getElementById('pesananReguler').innerText = data.reguler;
+            document.getElementById('pesananCustom').innerText = data.custom;
+        });
+}
+
+loadStatistik();
+setInterval(loadStatistik, 3000);
+</script>
 
 @endsection
